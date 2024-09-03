@@ -11,7 +11,7 @@ You can find an example dashboard in the examples directory
 
 ### Install
 
-On the release page, you'll find precompiled binaries that are digitally signed.
+On the [release page](https://github.com/netinvent/altaro_exporter/releases), you'll find precompiled binaries that are digitally signed.
 
 The exporter needs to be installed on the host that has Altaro VM Backup installed (since discussing with the API from anywhere else fails with `HTTP Error 400. The request hostname is invalid.`)
 
