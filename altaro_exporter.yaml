@@ -1,0 +1,15 @@
+altaro_server:
+  server_port: 36014
+  server_address: localhost
+  username: administrator
+  password: SomeSuperSecretPassword_with_3_Unicorns
+  domain: .
+  rest_host: localhost
+  rest_port: 36015
+http_server:
+  port: 9769
+  listen: 0.0.0.0
+  log_file: altaro_exporter.log
+  no_auth: true
+  username:
+  password:

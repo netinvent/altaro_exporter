@@ -1,0 +1,3 @@
+command_runner>=1.6.0
+ofunctions.platform
+nuitka
