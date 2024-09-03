@@ -102,7 +102,7 @@ Of course, you can also run the executable manually.
 
 ### Self compilation
 
-For those who prefer compiling the project themselves, you can install Python >= 3.6 and install requirements in `requirements.txt` and `requirements-compile.txt`.
+For those who prefer compiling the project themselves, you can install Python >= 3.8 and install requirements in `requirements.txt` and `requirements-compile.txt`.
 Once this is done, you can simply launch the `compile.py` script from the root folder of the project. 
 Optionally, you can modifiy the settings / icons in the resources directory.   
 
