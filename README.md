@@ -115,7 +115,8 @@ If requested, we can provide pip packages too.
 
 ### License
 
-MIT // 2024 - NetInvent SASU
-MIT // 2020 - Raphael Pertl
+Licensed under MIT License, so do whatever you want with it... Contributions are welcome  
+(C) 2024 NetInvent SASU  
+(C) 2020 Raphael Pertl
 
 Based on the work of Raphael Pertl available [here](https://github.com/raph2i/altaro_backup_exporter)
