@@ -5,7 +5,10 @@ altaro_server:
   password: SomeSuperSecretPassword_with_3_Unicorns
   domain: .
   rest_host: localhost
-  rest_port: 36015
+  # rest port is 36015 in v9 and 36013 in v9.1
+  rest_port: 36013
+  # rest path is /api in v8 and v9, and /api/rest in v9.1
+  rest_path: /api/rest
 http_server:
   port: 9769
   listen: 0.0.0.0

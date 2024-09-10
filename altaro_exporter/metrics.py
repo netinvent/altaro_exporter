@@ -9,7 +9,7 @@ __site__ = "https://www.github.com/netinvent/altaro_exporter"
 __description__ = "Altaro API Prometheus data exporter"
 __copyright__ = "Copyright (C) 2024 NetInvent"
 __license__ = "GPL-3.0-only"
-__build__ = "2024082001"
+__build__ = "2024091001"
 
 
 import sys
@@ -54,6 +54,7 @@ if not config_dict:
 
 altaro_rest_host = config_dict.g("altaro_server.rest_host")
 altaro_rest_port = config_dict.g("altaro_server.rest_port")
+altaro_rest_path = config_dict.g("altaro_server.rest_path")
 altaro_server_address = config_dict.g("altaro_server.server_address")
 altaro_server_port = config_dict.g("altaro_server.server_port")
 username = config_dict.g("altaro_server.username")
@@ -69,6 +70,7 @@ security = HTTPBasic()
 api = AltaroAPI(
     altaro_rest_host=altaro_rest_host,
     altaro_rest_port=altaro_rest_port,
+    altaro_rest_path=altaro_rest_path,
     altaro_server_address=altaro_server_address,
     altaro_server_port=altaro_server_port,
     username=username,

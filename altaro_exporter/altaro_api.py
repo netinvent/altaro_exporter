@@ -9,7 +9,7 @@ __site__ = "https://www.github.com/netinvent/altaro_exporter"
 __description__ = "Altaro API Prometheus data exporter"
 __copyright__ = "Copyright (C) 2024 NetInvent"
 __license__ = "GPL-3.0-only"
-__build__ = "2024090301"
+__build__ = "2024091001"
 
 from ofunctions.requestor import Requestor
 from ofunctions.logger_utils import logger_get_logger
@@ -36,7 +36,8 @@ class AltaroAPI:
     def __init__(
         self,
         altaro_rest_host: str,
-        altaro_rest_port: int = 36015,
+        altaro_rest_port: int = 36013,
+        altaro_rest_path: str = "/api/rest",
         domain: str = None,
         username: str = None,
         password: str = None,
@@ -64,6 +65,7 @@ class AltaroAPI:
 
         self.altaro_rest_host = altaro_rest_host
         self.altaro_rest_port = altaro_rest_port
+        self.altaro_rest_path = altaro_rest_path
         self.username = username
         self.password = password
         self.cert_verify = cert_verify
@@ -84,7 +86,7 @@ class AltaroAPI:
         #    msg = f"Cannot create session to {self.altaro_rest_host}"
         #    logger.critical(msg)
         #    raise ValueError(msg)
-        self.req.endpoint = "api"
+        self.req.endpoint = self.altaro_rest_path.strip("")
 
         # Register gauges
 
@@ -230,7 +232,7 @@ class AltaroAPI:
 
     def list_vms(self, include_unconfigured: bool = False):
         result = self._api_request(
-            pre_endpoint="/api/vms/list/",
+            pre_endpoint=f"/{self.altaro_rest_path}/vms/list/",
             post_endpoint="/1" if not include_unconfigured else "",
         )
         if result is False:
