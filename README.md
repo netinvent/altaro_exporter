@@ -101,7 +101,8 @@ altaro_lastbackup_timestamp
 This program has currently been tested on HornetSecurity v9.0 and v9.1.
 
 By default, the exporter will log to current binary directory into a file named `altaro_exporter.log`
-Of course, you can also run the executable manually.
+Of course, you can also run the executable manually.  
+Depending on your HornetSecurity / Altaro version, you'll have to change the `altaro_rest_port` and `altaro_rest_path` settings accordingly (see the example yaml config file).
 
 ### Self compilation
 
