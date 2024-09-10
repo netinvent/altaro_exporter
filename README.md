@@ -1,6 +1,6 @@
 # Altaro / Hornet Security VM Backup Exporter
 
-This is an Altaro VM Backup data exporter for Prometheus 
+This is an Hornet Security / Altaro VM Backup v8 and v9 data exporter for Prometheus 
 
 ### Grafana Dashboard
 
@@ -20,10 +20,11 @@ In the directory, you'll find the binaries as well as the config file `altaro_ex
 
 Configure your local/domain administrator account according to your needs. Don't worry, once running, the user and password will be encrypted.  
 
-Once you're done, create a Windows Service with the following command
+Once you're done, create a Windows Service with the following commands
 
 ```
 sc create altaro_exporter DisplayName= "Altaro API exporter for Prometheus" start= auto binpath= "c:\altaro_exporter\altaro_exporter-x64.exe -c c:\altaro_exporter\altaro_exporter.yaml"
+sc Description altaro_exporter "Altaro API exporter service by NetInvent"
 ```
 
 Launch the service:
@@ -96,6 +97,8 @@ altaro_lastbackup_timestamp
 ```
 
 ### Troubeshooting
+
+This program has currently been tested on HornetSecurity v9.0 and v9.1.
 
 By default, the exporter will log to current binary directory into a file named `altaro_exporter.log`
 Of course, you can also run the executable manually.
