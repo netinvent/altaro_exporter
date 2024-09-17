@@ -35,7 +35,7 @@ def main():
 
     parser = ArgumentParser(
         prog=f"{__appname__}",
-        description="""Naviko API Prometheus exporter\n
+        description="""Hornet Security / Altaro API Prometheus exporter\n
 This program is distributed under the GNU General Public License and comes with ABSOLUTELY NO WARRANTY.\n
 This is free software, and you are welcome to redistribute it under certain conditions; Please type --license for more info.""",
     )

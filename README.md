@@ -1,6 +1,6 @@
 # Altaro / Hornet Security VM Backup Exporter
 
-This is an Hornet Security / Altaro VM Backup v8 and v9 data exporter for Prometheus 
+This is a Hornet Security / Altaro VM Backup v8 and v9 data exporter for Prometheus 
 
 ### Grafana Dashboard
 
