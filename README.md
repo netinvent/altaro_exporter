@@ -6,8 +6,7 @@ This is a Hornet Security / Altaro VM Backup v8 and v9 data exporter for Prometh
 
 You can find an example dashboard in the examples directory
 
-![image](examples/grafana_dashboard_v0.9.png)
-![image](examples/grafana_dashboard_v0.9b.png)
+![image](examples/grafana_dashboard_v0.10.0.png)
 
 ### Install
 
@@ -19,11 +18,14 @@ Extract the zip file to let's say `C:\altaro_exporter`
 In the directory, you'll find the binaries as well as the config file `altaro_exporter.yaml`
 
 Configure your local/domain administrator account according to your needs. Don't worry, once running, the user and password will be encrypted.  
+Also, configure if you want to include non scheduled and/or unconfigured VMs in your metrics.  
+By default, we include them since it makes sense to have too much information.  
+Nevertheless, on a lot of backup policies, they should be excluded in order to avoid false positives.  
 
 Once you're done, create a Windows Service with the following commands
 
 ```
-sc create altaro_exporter DisplayName= "Altaro API exporter for Prometheus" start= auto binpath= "c:\altaro_exporter\altaro_exporter-x64.exe -c c:\altaro_exporter\altaro_exporter.yaml"
+sc create altaro_exporter DisplayName= "HornetSecurity Altaro API exporter for Prometheus" start= auto binpath= "c:\altaro_exporter\altaro_exporter-x64.exe -c c:\altaro_exporter\altaro_exporter.yaml"
 sc Description altaro_exporter "Altaro API exporter service by NetInvent"
 ```
 
@@ -53,9 +55,9 @@ Keep in mind that you need to create a firewall rule if you want to query it's o
 
 ### Metrics
 
-API status metric (0 = OK, 1 = Cannot connect to API, 2 = API didn't like our request)
+API status metric 
 ```
-altaro_api_success
+altaro_api_success (0 = OK, 1 = Cannot connect to API, 2 = API didn't like our request)
 ```
 
 The follwoing metrics have this labels:
@@ -63,8 +65,8 @@ The follwoing metrics have this labels:
 
 metrics:
 ```
-altaro_lastoffsitecopy_result
-altaro_lastbackup_result
+altaro_lastoffsitecopy_result (0 = Succces, 1 = Warning, 2 = Error, 3 = Unknown, 4 = Other)
+altaro_lastbackup_result (0 = Succces, 1 = Warning, 2 = Error, 3 = Unknown, 4 = Other)
 altaro_lastoffsitecopy_transfersize_uncompressed_bytes
 altaro_lastoffsitecopy_transfersize_compressed_bytes
 altaro_lastbackup_transfersize_uncompressed_bytes
@@ -79,11 +81,11 @@ altaro_lastbackup_timestamp
 
 ```
     - alert: Last Backup not successful
-      expr: altaro_lastbackup_result{altaro_lastbackup_result="Success"} != 1
+      expr: altaro_lastbackup_result{} > 0
       for: 1m
 
     - alert: Last OffSite Copy not successful
-      expr: altaro_lastoffsitecopy_result{altaro_lastoffsitecopy_result="Success"} != 1
+      expr: altaro_lastoffsitecopy_result{} > 0
       for: 1m
 
     - alert: Last Backup older than 30 hours

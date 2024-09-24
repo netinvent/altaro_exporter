@@ -9,10 +9,9 @@ __site__ = "https://www.github.com/netinvent/altaro_exporter"
 __description__ = "Altaro API Prometheus data exporter"
 __copyright__ = "Copyright (C) 2024 NetInvent"
 __license__ = "GPL-3.0-only"
-__build__ = "2024091001"
+__build__ = "2024092401"
 
 from ofunctions.requestor import Requestor
-from ofunctions.logger_utils import logger_get_logger
 from ofunctions.misc import fn_name
 from logging import getLogger
 import time
@@ -138,18 +137,16 @@ class AltaroAPI:
             "Uncompressed size of last offsite copy",
             ["vmname", "hostname", "vmuuid"],
         )
-
-        self.enum_lastbackup_result = Enum(
+        self.gauge_lastbackup_result = Gauge(
             "altaro_lastbackup_result",
-            "Result of last backup",
+            "Result of last backup 0 = success, 1 = warning, 2 = error, 3 = unknown, 4 = other",
             ["vmname", "hostname", "vmuuid"],
-            states=["Success", "Warning", "Error"],
         )
-        self.enum_lastoffsitecopy_result = Enum(
+
+        self.gauge_lastoffsitecopy_result = Gauge(
             "altaro_lastoffsitecopy_result",
-            "Result of last offsite copy",
+            "Result of last offsite copy 0 = success, 1 = warning, 2 = error, 3 = unknown, 4 = other",
             ["vmname", "hostname", "vmuuid"],
-            states=["Success", "Warning", "Error"],
         )
 
         # Create a metric to track time spent and requests made.
@@ -230,7 +227,9 @@ class AltaroAPI:
         self.gauge_altaro_api_success.set(0)
         return result
 
-    def list_vms(self, include_unconfigured: bool = False):
+    def list_vms(
+        self, include_unconfigured: bool = False, include_non_scheduled: bool = False
+    ):
         result = self._api_request(
             pre_endpoint=f"/{self.altaro_rest_path}/vms/list/",
             post_endpoint="/1" if not include_unconfigured else "",
@@ -248,6 +247,12 @@ class AltaroAPI:
             vmname = vm["VirtualMachineName"]
             hostname = vm["HostName"]
             vmuuid = vm["HypervisorVirtualMachineUuid"]
+            is_scheduled = vm["NextBackupTime"] or vm["NextOffsiteCopyTime"]
+            if not is_scheduled and not include_non_scheduled:
+                logger.info(
+                    f"Skipping VM {vmname} on {hostname} as it is not scheduled"
+                )
+                continue
             logger.info(f"Found VM {vmname} on {hostname}")
 
             # Last Backup, ex 2024-08-13-01-53-14
@@ -308,19 +313,45 @@ class AltaroAPI:
 
             # LastBackupResult
             try:
-                self.enum_lastbackup_result.labels(vmname, hostname, vmuuid).state(
-                    vm["LastBackupResult"]
-                )
-            except Exception:
-                logger.info(f"{vmname} has no last backup")
+                if vm["LastBackupResult"].lower() == "success":
+                    last_backup_result = 0
+                elif vm["LastBackupResult"].lower() == "warning":
+                    last_backup_result = 1
+                elif vm["LastBackupResult"].lower() == "error":
+                    last_backup_result = 2
+                elif vm["LastBackupResult"].lower() == "unknown":
+                    last_backup_result = 3
+                elif vm["LastBackupResult"] is not None:
+                    last_backup_result = 4
+                else:
+                    last_backup_result = None
+                if last_backup_result is not None:
+                    self.gauge_lastbackup_result.labels(vmname, hostname, vmuuid).set(
+                        last_backup_result
+                    )
+            except Exception as exc:
+                logger.info(f"{vmname} has no last backup: {exc}")
 
             # LastOffsiteCopyResult
             try:
-                self.enum_lastoffsitecopy_result.labels(vmname, hostname, vmuuid).state(
-                    vm["LastOffsiteCopyResult"]
-                )
-            except Exception:
-                logger.info(f"{vmname} has no lastoffsitecopy")
+                if vm["LastOffsiteCopyResult"].lower() == "success":
+                    last_offsite_backup_result = 0
+                elif vm["LastOffsiteCopyResult"].lower() == "warning":
+                    last_offsite_backup_result = 1
+                elif vm["LastOffsiteCopyResult"].lower() == "error":
+                    last_offsite_backup_result = 2
+                elif vm["LastOffsiteCopyResult"].lower() == "unknown":
+                    last_offsite_backup_result = 3
+                elif vm["LastOffsiteCopyResult"] is not None:
+                    last_offsite_backup_result = 4
+                else:
+                    last_offsite_backup_result = None
+                if last_offsite_backup_result is not None:
+                    self.gauge_lastoffsitecopy_result.labels(
+                        vmname, hostname, vmuuid
+                    ).set(last_offsite_backup_result)
+            except Exception as exc:
+                logger.info(f"{vmname} has no lastoffsitecopy: {exc}")
         return True
 
 

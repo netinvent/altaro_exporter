@@ -18,7 +18,6 @@ from logging import getLogger
 from cryptidy import symmetric_encryption as enc
 from ruamel.yaml import YAML
 from ruamel.yaml.compat import ordereddict
-from ruamel.yaml.comments import CommentedMap
 from ofunctions.misc import replace_in_iterable
 
 ID_STRING = "__ALTARO__"

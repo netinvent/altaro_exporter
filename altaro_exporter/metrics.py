@@ -61,6 +61,15 @@ username = config_dict.g("altaro_server.username")
 password = config_dict.g("altaro_server.password")
 domain = config_dict.g("altaro_server.domain")
 
+try:
+    include_unconfigured = config_dict["options"]["include_unconfigured"]
+except:
+    include_unconfigured = True
+try:
+    include_non_scheduled = config_dict["options"]["include_non_scheduled"]
+except:
+    include_non_scheduled = True
+
 
 app = FastAPIOffline()
 metrics_app = prometheus_client.make_asgi_app()
@@ -125,7 +134,10 @@ async def api_root(auth=Depends(auth_scheme)):
 @app.get("/metrics")
 async def get_metrics(auth=Depends(auth_scheme)):
     try:
-        api.list_vms()
+        api.list_vms(
+            include_unconfigured=include_unconfigured,
+            include_non_scheduled=include_non_scheduled,
+        )
     except KeyError:
         logger.critical("Bogus configuration file. Missing Altaro_hosts key.")
     return Response(

@@ -9,6 +9,9 @@ altaro_server:
   rest_port: 36013
   # rest path is /api in v8 and v9, and /api/rest in v9.1
   rest_path: /api/rest
+options:
+  include_unconfigured: true
+  include_non_scheduled: true
 http_server:
   port: 9769
   listen: 0.0.0.0
