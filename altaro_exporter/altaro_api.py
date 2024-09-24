@@ -91,7 +91,7 @@ class AltaroAPI:
 
         self.gauge_altaro_api_success = Gauge(
             "altaro_api_success",
-            "Altaro API request success",
+            "Altaro API request success 0 = success, 1 = cannot connect, 2 = api error",
         )
 
         self.gauge_lastbackup = Gauge(
