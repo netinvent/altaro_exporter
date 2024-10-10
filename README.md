@@ -1,6 +1,6 @@
 # Altaro / Hornet Security VM Backup Exporter
 [![License](https://img.shields.io/badge/license-MIT-blu.svg)](https://opensource.org/license/mit)
-[![Percentage of issues still open](http://isitmaintained.com/badge/open/nnetinvent/altaro_exporter.svg)](http://isitmaintained.com/project/netinvent/altaro_exporter "Percentage of issues still open")
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/netinvent/altaro_exporter.svg)](http://isitmaintained.com/project/netinvent/altaro_exporter "Percentage of issues still open")
 [![GitHub Release](https://img.shields.io/github/release/netinvent/altaro_exporter.svg?label=Latest)](https://github.com/netinvent/altaro_exporter/releases/latest)
 [![Linux linter](https://github.com/netinvent/altaro_exporter/actions/workflows/pylint-windows.yaml/badge.svg)](https://github.com/netinvent/altaro_exporter/actions/workflows/pylint-windows.yaml)
 
