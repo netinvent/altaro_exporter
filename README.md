@@ -20,14 +20,16 @@ On the [release page](https://github.com/netinvent/altaro_exporter/releases), yo
 The exporter needs to be installed on the host that has Altaro VM Backup installed (since discussing with the API from anywhere else fails with `HTTP Error 400. The request hostname is invalid.`)
 
 Extract the zip file to let's say `C:\altaro_exporter`  
-In the directory, you'll find the binaries as well as the config file `altaro_exporter.yaml`
+In the directory, you'll find the binaries. Grab yourself a copy of `altaro_exporter.yaml` found in this repository and copy it into the same directory.  
+Unless you want to change the altaro_exporter password regulary, you should create a service account (local admin) which you will use to connect to Altaro console, and use for the exporter.   
 
 Configure your local/domain administrator account according to your needs. Don't worry, once running, the user and password will be encrypted.  
+
 Also, configure if you want to include non scheduled and/or unconfigured VMs in your metrics.  
 By default, we include them since it makes sense to have too much information.  
 Nevertheless, on a lot of backup policies, they should be excluded in order to avoid false positives.  
 
-Once you're done, create a Windows Service with the following commands
+Once you're done, create a Windows Service with the following commands in an elevated command line prompt:
 
 ```
 sc create altaro_exporter DisplayName= "HornetSecurity Altaro API exporter for Prometheus" start= auto binpath= "c:\altaro_exporter\altaro_exporter-x64.exe -c c:\altaro_exporter\altaro_exporter.yaml"
@@ -57,6 +59,11 @@ curl http://localhost:9769/metrics
 
 The default exporter-port is 9769/tcp, which you can change in the config file.
 Keep in mind that you need to create a firewall rule if you want to query it's output.
+
+You can create the firewall rule with the following command:
+```
+netsh advfirewall firewall add rule name="Hornet Security / Altaro exporter" protocol=TCP dir=in localport=9769 action=allow
+```
 
 ### Metrics
 
@@ -105,11 +112,13 @@ altaro_lastbackup_timestamp
 
 ### Troubeshooting
 
-This program has currently been tested on HornetSecurity v9.0 and v9.1.
+This program has currently been tested on HornetSecurity v9.0, v9.1 and v9.3.
 
 By default, the exporter will log to current binary directory into a file named `altaro_exporter.log`
 Of course, you can also run the executable manually.  
 Depending on your HornetSecurity / Altaro version, you'll have to change the `altaro_rest_port` and `altaro_rest_path` settings accordingly (see the example yaml config file).
+
+You may also run the exporter with `--debug` in order to gain more information.
 
 ### Self compilation
 
@@ -118,6 +127,16 @@ Once this is done, you can simply launch the `compile.py` script from the root f
 Optionally, you can modifiy the settings / icons in the resources directory.   
 
 Note that in order to produce a proper Windows Service, you'll need Nuitka Commercial, please see https://nuitka.net/doc/commercial.html
+
+#### Signing executable
+
+If you have a physical USB token for code signing, you can use the following:
+
+```
+from windows_tools.signtool import SignTool
+s = SignTool()
+s.sign(r"C:\GIT\altaro_exporter\altaro_exporter-x64.exe")
+```
 
 ### Pip packaging
 
