@@ -213,7 +213,8 @@ class AltaroAPI:
             self.authenticate(action="logout")
             self.authenticate(action="login")
             result = self.req.requestor(
-                endpoint=f"{pre_endpoint}{self.session_id}{post_endpoint}", action=action
+                endpoint=f"{pre_endpoint}{self.session_id}{post_endpoint}",
+                action=action,
             )
             if not result:
                 logger.error(f"API call from {fn_name(1)} failed with: {result}")
