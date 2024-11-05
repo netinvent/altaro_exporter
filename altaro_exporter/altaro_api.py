@@ -9,7 +9,7 @@ __site__ = "https://www.github.com/netinvent/altaro_exporter"
 __description__ = "Altaro API Prometheus data exporter"
 __copyright__ = "Copyright (C) 2024 NetInvent"
 __license__ = "GPL-3.0-only"
-__build__ = "2024092401"
+__build__ = "2024110501"
 
 from ofunctions.requestor import Requestor
 from ofunctions.misc import fn_name
@@ -175,8 +175,9 @@ class AltaroAPI:
             try:
                 logger.error(f"Request failed with: {result}")
                 return False
-            except AttributeError:
-                logger.error(": No more info. Error code")
+            except AttributeError as exc:
+                logger.error(f"No more info. Error code: {exc}")
+                logger.debug("Trace:", exc_info=True)
                 return False
         elif not result["Success"]:
             logger.error(
@@ -207,9 +208,17 @@ class AltaroAPI:
             endpoint=f"{pre_endpoint}{self.session_id}{post_endpoint}", action=action
         )
         if not result:
-            logger.error(f"API call from {fn_name(1)} failed with: {result}")
-            self.gauge_altaro_api_success.set(1)
-            return False
+            # Let's try to logout, login just to make sure
+            logger.warning("API call failed, trying to reauthenticate")
+            self.authenticate(action="logout")
+            self.authenticate(action="login")
+            result = self.req.requestor(
+                endpoint=f"{pre_endpoint}{self.session_id}{post_endpoint}", action=action
+            )
+            if not result:
+                logger.error(f"API call from {fn_name(1)} failed with: {result}")
+                self.gauge_altaro_api_success.set(1)
+                return False
         if not result["Success"]:
             if "Invalid Token" in result["ErrorMessage"]:
                 self.authenticate(action="logout")
