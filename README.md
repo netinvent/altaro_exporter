@@ -77,8 +77,8 @@ The follwoing metrics have this labels:
 
 metrics:
 ```
-altaro_lastoffsitecopy_result (0 = Succces, 1 = Warning, 2 = Error, 3 = Unknown, 4 = Other)
-altaro_lastbackup_result (0 = Succces, 1 = Warning, 2 = Error, 3 = Unknown, 4 = Other)
+altaro_lastoffsitecopy_result (0 = Succces, 1 = Warning, 2 = Error, 3 = Unknown, 4 = Other (includes various errors like BASEBACKUPCONTROLLER_18))
+altaro_lastbackup_result (0 = Succces, 1 = Warning, 2 = Error, 3 = Unknown, 4 = Other (includes various errors))
 altaro_lastoffsitecopy_transfersize_uncompressed_bytes
 altaro_lastoffsitecopy_transfersize_compressed_bytes
 altaro_lastbackup_transfersize_uncompressed_bytes

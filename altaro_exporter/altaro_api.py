@@ -139,13 +139,13 @@ class AltaroAPI:
         )
         self.gauge_lastbackup_result = Gauge(
             "altaro_lastbackup_result",
-            "Result of last backup 0 = success, 1 = warning, 2 = error, 3 = unknown, 4 = other",
+            "Result of last backup 0 = success, 1 = warning, 2 = error, 3 = unknown, 4 = other errors",
             ["vmname", "hostname", "vmuuid"],
         )
 
         self.gauge_lastoffsitecopy_result = Gauge(
             "altaro_lastoffsitecopy_result",
-            "Result of last offsite copy 0 = success, 1 = warning, 2 = error, 3 = unknown, 4 = other",
+            "Result of last offsite copy 0 = success, 1 = warning, 2 = error, 3 = unknown, 4 = other errors",
             ["vmname", "hostname", "vmuuid"],
         )
 
