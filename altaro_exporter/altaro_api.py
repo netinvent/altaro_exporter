@@ -24,7 +24,7 @@ from prometheus_client import Summary, Gauge, Enum
 from altaro_exporter.__debug__ import _DEBUG
 
 
-logger = getLogger(_DEBUG)
+logger = getLogger()
 
 
 class AltaroAPI:
