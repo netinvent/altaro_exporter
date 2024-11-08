@@ -3,7 +3,7 @@
 #
 # This file is part of altaro_exporter
 
-__intname__ = "npbackup.__debug__"
+__intname__ = "netinvent.__debug__"
 __author__ = "Orsiris de Jong"
 __site__ = "https://github.com/netinvent/altaro_exporter"
 __description__ = "Altaro Prometheus Exporter"
