@@ -94,7 +94,7 @@ This is free software, and you are welcome to redistribute it under certain cond
             "log_level": "debug",
             "reload": False,  # Makes class session_id volatile when reload=True
             "host": listen if listen else "0.0.0.0",
-            "port": port if port else 9119,
+            "port": port if port else 9769,
         }
     else:
         import gunicorn.app.base
@@ -123,7 +123,7 @@ This is free software, and you are welcome to redistribute it under certain cond
 
         server_args = {
             "workers": 4,  # Don't run multiple workers since we don't have shared variables yet (multiprocessing.cpu_count() * 2) + 1,
-            "bind": f"{listen}:{port}" if listen else "0.0.0.0:8080",
+            "bind": f"{listen}:{port}" if listen else "0.0.0.0:9769",
             "worker_class": "uvicorn.workers.UvicornWorker",
         }
 
