@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_MIMIR",
-      "label": "Mimir",
+      "name": "DS_PROMETHEUS",
+      "label": "Prometheus",
       "description": "",
       "type": "datasource",
       "pluginId": "prometheus",
@@ -21,7 +21,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.3.0"
+      "version": "11.4.0"
     },
     {
       "type": "datasource",
@@ -67,7 +67,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MIMIR}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -110,7 +110,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 5,
         "w": 8,
         "x": 0,
         "y": 0
@@ -133,12 +133,12 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MIMIR}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "altaro_api_success{__tenant_id__=~\"$tenant\",instance=~\"$instance\"}",
@@ -154,7 +154,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MIMIR}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -191,7 +191,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 5,
         "w": 8,
         "x": 8,
         "y": 0
@@ -214,12 +214,12 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MIMIR}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "0 < altaro_lastbackup_result{__tenant_id__=~\"$tenant\",instance=~\"$instance\",vmname=~\"$vmname\",hostname=~\"$hostname\"} < 3",
@@ -235,7 +235,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MIMIR}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -272,7 +272,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 5,
         "w": 8,
         "x": 16,
         "y": 0
@@ -295,12 +295,12 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MIMIR}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "0 < altaro_lastoffsitecopy_result{__tenant_id__=~\"$tenant\",instance=~\"$instance\",vmname=~\"$vmname\",hostname=~\"$hostname\"} < 3",
@@ -316,7 +316,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MIMIR}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -366,7 +366,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 4
+        "y": 5
       },
       "id": 2,
       "options": {
@@ -390,12 +390,12 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MIMIR}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -412,7 +412,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MIMIR}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -474,7 +474,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 13
       },
       "id": 4,
       "options": {
@@ -489,12 +489,12 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MIMIR}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -511,7 +511,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MIMIR}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -561,7 +561,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 20
       },
       "id": 6,
       "options": {
@@ -585,12 +585,12 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MIMIR}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -607,7 +607,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MIMIR}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -669,7 +669,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 27
       },
       "id": 5,
       "options": {
@@ -684,12 +684,12 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MIMIR}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -706,7 +706,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MIMIR}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -774,7 +774,7 @@
         "h": 14,
         "w": 24,
         "x": 0,
-        "y": 33
+        "y": 34
       },
       "id": 3,
       "options": {
@@ -797,12 +797,12 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MIMIR}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -819,7 +819,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MIMIR}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -887,7 +887,7 @@
         "h": 14,
         "w": 24,
         "x": 0,
-        "y": 47
+        "y": 48
       },
       "id": 7,
       "options": {
@@ -910,12 +910,12 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MIMIR}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -941,7 +941,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_MIMIR}"
+          "uid": "${DS_PROMETHEUS}"
         },
         "definition": "label_values(altaro_api_success,instance)",
         "includeAll": false,
@@ -960,7 +960,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_MIMIR}"
+          "uid": "${DS_PROMETHEUS}"
         },
         "definition": "label_values(altaro_api_success,__tenant_id__)",
         "includeAll": true,
@@ -981,7 +981,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_MIMIR}"
+          "uid": "${DS_PROMETHEUS}"
         },
         "definition": "label_values(altaro_lastbackup_result,vmname)",
         "includeAll": true,
@@ -1002,7 +1002,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_MIMIR}"
+          "uid": "${DS_PROMETHEUS}"
         },
         "definition": "label_values(altaro_lastbackup_result,hostname)",
         "includeAll": true,
@@ -1027,8 +1027,8 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Hornet Security / Altaro VM Backup 2024110801",
+  "title": "Hornet Security / Altaro VM Backup 2024122301",
   "uid": "bdwrzp4vpvxfkf",
-  "version": 12,
+  "version": 5,
   "weekStart": ""
 }
