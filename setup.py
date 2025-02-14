@@ -99,9 +99,7 @@ requirements = parse_requirements(
 long_description = _read_file("README.md")
 
 
-console_scripts = [
-    "altaro_exporter = altaro_exporter.server:main"
-]
+console_scripts = ["altaro_exporter = altaro_exporter.server:main"]
 setuptools.setup(
     name=PACKAGE_NAME,
     # We may use find_packages in order to not specify each package manually

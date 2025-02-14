@@ -163,8 +163,6 @@ class AltaroAPI:
             except AttributeError:
                 pass  # built-in collectors don't inherit from MetricsWrapperBase
 
-
-
     def authenticate(self, action: str = "login"):
         logger.info(
             f"Logging in as: {self.username} on server {self.altaro_server_address}:{self.altaro_server_port} via api {self.altaro_rest_host}:{self.altaro_rest_port}"

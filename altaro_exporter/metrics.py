@@ -143,6 +143,4 @@ async def get_metrics(auth=Depends(auth_scheme)):
 
     except KeyError:
         logger.critical("Bogus configuration file. Missing Altaro_hosts key.")
-    return Response(
-        content=content, media_type="text/plain"
-    )
+    return Response(content=content, media_type="text/plain")
