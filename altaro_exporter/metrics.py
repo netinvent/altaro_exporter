@@ -7,7 +7,7 @@ __appname__ = "altaro_exporter"
 __author__ = "Orsiris de Jong"
 __site__ = "https://www.github.com/netinvent/altaro_exporter"
 __description__ = "Altaro API Prometheus data exporter"
-__copyright__ = "Copyright (C) 2024 NetInvent"
+__copyright__ = "Copyright (C) 2024-2025 NetInvent"
 __license__ = "GPL-3.0-only"
 __build__ = "2024091001"
 
@@ -138,8 +138,11 @@ async def get_metrics(auth=Depends(auth_scheme)):
             include_unconfigured=include_unconfigured,
             include_non_scheduled=include_non_scheduled,
         )
+        api.reset_vm_metrics()
+        content = prometheus_client.generate_latest()
+
     except KeyError:
         logger.critical("Bogus configuration file. Missing Altaro_hosts key.")
     return Response(
-        content=prometheus_client.generate_latest(), media_type="text/plain"
+        content=content, media_type="text/plain"
     )

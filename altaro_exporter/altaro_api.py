@@ -7,7 +7,7 @@ __appname__ = "altaro_exporter"
 __author__ = "Orsiris de Jong"
 __site__ = "https://www.github.com/netinvent/altaro_exporter"
 __description__ = "Altaro API Prometheus data exporter"
-__copyright__ = "Copyright (C) 2024 NetInvent"
+__copyright__ = "Copyright (C) 2024-2025 NetInvent"
 __license__ = "GPL-3.0-only"
 __build__ = "2024110501"
 
@@ -17,7 +17,7 @@ from logging import getLogger
 import time
 import datetime
 import requests
-from prometheus_client import Summary, Gauge, Enum
+from prometheus_client import Summary, Gauge, Enum, REGISTRY
 
 # from prometheus_client.core import GaugeMetricFamily, CounterMetricFamily, REGISTRY
 
@@ -153,6 +153,17 @@ class AltaroAPI:
         REQUEST_TIME = Summary(
             "request_processing_seconds", "Time spent processing request"
         )
+
+    def reset_vm_metrics(self):
+        collectors = tuple(REGISTRY._collector_to_names.keys())
+        for collector in collectors:
+            try:
+                collector._metrics.clear()
+                collector._metric_init()
+            except AttributeError:
+                pass  # built-in collectors don't inherit from MetricsWrapperBase
+
+
 
     def authenticate(self, action: str = "login"):
         logger.info(
