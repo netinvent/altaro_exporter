@@ -7,7 +7,7 @@ __intname__ = "netinvent.__debug__"
 __author__ = "Orsiris de Jong"
 __site__ = "https://github.com/netinvent/altaro_exporter"
 __description__ = "Altaro Prometheus Exporter"
-__copyright__ = "Copyright (C) 2024 NetInvent"
+__copyright__ = "Copyright (C) 2024-2025 NetInvent"
 __build__ = "2024081901"
 
 

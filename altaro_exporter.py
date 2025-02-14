@@ -7,7 +7,7 @@ __appname__ = "altaro_exporter"
 __author__ = "Orsiris de Jong"
 __site__ = "https://www.github.com/netinvent/altaro_exporter"
 __description__ = "Naviko API Prometheus data exporter"
-__copyright__ = "Copyright (C) 2024 NetInvent"
+__copyright__ = "Copyright (C) 2024-2025 NetInvent"
 __license__ = "GPL-3.0-only"
 __build__ = "2024032601"
 

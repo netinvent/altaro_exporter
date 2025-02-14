@@ -44,7 +44,7 @@ sc start altaro_exporter
 You should now have a running Windows Service as seen in `services.msc`:
 ![image](examples/altaro_exporter_service.png)
 
-You must also enable the Altaro REST API service with the following command:
+On elder versions of VMBackup (prior to v9.1), you must also enable the Altaro REST API service with the following command:
 ```
 sc config Hornetsecurity.VMBackup.Rest start= auto
 sc start Hornetsecurity.VMBackup.Rest
@@ -146,7 +146,7 @@ If requested, we can provide pip packages too.
 ### License
 
 Licensed under MIT License, so do whatever you want with it... Contributions are welcome  
-(C) 2024 NetInvent SASU  
+(C) 2024-2025 NetInvent SASU  
 (C) 2020 Raphael Pertl
 
 Based on the work of Raphael Pertl available [here](https://github.com/raph2i/altaro_backup_exporter)
