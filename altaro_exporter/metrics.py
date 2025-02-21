@@ -138,9 +138,8 @@ async def get_metrics(auth=Depends(auth_scheme)):
             include_unconfigured=include_unconfigured,
             include_non_scheduled=include_non_scheduled,
         )
-        api.reset_vm_metrics()
         content = prometheus_client.generate_latest()
-
+        api.reset_vm_metrics()
     except KeyError:
         logger.critical("Bogus configuration file. Missing Altaro_hosts key.")
     return Response(content=content, media_type="text/plain")
