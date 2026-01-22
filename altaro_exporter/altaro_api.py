@@ -7,9 +7,9 @@ __appname__ = "altaro_exporter"
 __author__ = "Orsiris de Jong"
 __site__ = "https://www.github.com/netinvent/altaro_exporter"
 __description__ = "Altaro API Prometheus data exporter"
-__copyright__ = "Copyright (C) 2024-2026 NetInvent"
+__copyright__ = "Copyright (C) 2024-2025 NetInvent"
 __license__ = "GPL-3.0-only"
-__build__ = "2026012201"
+__build__ = "2026012202"
 
 import logging
 import time
@@ -18,6 +18,7 @@ import requests
 from prometheus_client import Summary, Gauge, Enum, REGISTRY
 from ofunctions.requestor import Requestor
 from ofunctions.misc import fn_name
+from altaro_exporter.__version__ import __version__ as exporter_version
 
 # from prometheus_client.core import GaugeMetricFamily, CounterMetricFamily, REGISTRY
 
@@ -91,6 +92,7 @@ class AltaroAPI:
         self.gauge_altaro_api_success = Gauge(
             "altaro_api_success",
             "Altaro API request success 0 = success, 1 = cannot connect, 2 = api error",
+            ["exporter_version"]
         )
 
         self.gauge_lastbackup = Gauge(
@@ -259,7 +261,7 @@ class AltaroAPI:
             )
             if not result:
                 logger.error(f"API call from {fn_name(1)} failed with: {result}")
-                self.gauge_altaro_api_success.set(1)
+                self.gauge_altaro_api_success.labels(exporter_version).set(1)
                 return False
         if not result["Success"]:
             if "Invalid Token" in result["ErrorMessage"]:
@@ -273,9 +275,9 @@ class AltaroAPI:
                     logger.error(
                         f"API call from {fn_name(1)} succeed but response failed with: {result['ErrorMessage']}"
                     )
-                self.gauge_altaro_api_success.set(2)
+                self.gauge_altaro_api_success.labels(exporter_version).set(2)
                 return False
-        self.gauge_altaro_api_success.set(0)
+        self.gauge_altaro_api_success.labels(exporter_version).set(0)
         return result
 
     def protocol_version(self):
