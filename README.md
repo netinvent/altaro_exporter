@@ -11,7 +11,7 @@ This is a Hornet Security / Altaro VM Backup v8 and v9 data exporter for Prometh
 
 You can find an example dashboard in the examples directory
 
-![image](examples/grafana_dashboard_v0.10.0.png)
+![image](examples/grafana_dashboard_v1.1.0.png)
 
 ### Install
 
@@ -87,6 +87,9 @@ altaro_lastoffsitecopy_duration_seconds
 altaro_lastbackup_duration_seconds
 altaro_lastoffsitecopy_timestamp
 altaro_lastbackup_timestamp
+altaro_latrestore_result (0 = Succces, 1 = Warning, 2 = Error, 3 = Unknown, 4 = Aborted, 5 = Other (includes various errors))
+altaro_lastrestore_timestamp
+altaro_lastrestore_duration_seconds
 ```
 
 ### Alert rules:
@@ -146,7 +149,7 @@ If requested, we can provide pip packages too.
 ### License
 
 Licensed under MIT License, so do whatever you want with it... Contributions are welcome  
-(C) 2024-2025 NetInvent SASU  
+(C) 2024-2026 NetInvent SASU  
 (C) 2020 Raphael Pertl
 
 Based on the work of Raphael Pertl available [here](https://github.com/raph2i/altaro_backup_exporter)
