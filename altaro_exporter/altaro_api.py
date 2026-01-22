@@ -155,7 +155,7 @@ class AltaroAPI:
         )
 
         self.gauge_lastrestore = Gauge(
-            "altaro_lastrestore",
+            "altaro_lastrestore_timestamp",
             "Timestamp of last restore operation",
             ["vmname", "vmuuid"],
         )
