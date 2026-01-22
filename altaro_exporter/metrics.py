@@ -25,7 +25,6 @@ from altaro_exporter.configuration import load_config
 from altaro_exporter.altaro_api import AltaroAPI
 import prometheus_client
 
-
 logger = getLogger()
 
 

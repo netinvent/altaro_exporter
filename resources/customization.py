@@ -13,7 +13,6 @@ __version__ = "1.3.1"
 
 import os
 
-
 # Windows Program name for scheduled task
 PROGRAM_NAME = "NetPerfect Altaro Exporter"
 
