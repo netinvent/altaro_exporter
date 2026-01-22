@@ -9,22 +9,21 @@ __site__ = "https://www.github.com/netinvent/altaro_exporter"
 __description__ = "Altaro API Prometheus data exporter"
 __copyright__ = "Copyright (C) 2024-2025 NetInvent"
 __license__ = "GPL-3.0-only"
-__build__ = "2024110501"
+__build__ = "2026012201"
 
-from ofunctions.requestor import Requestor
-from ofunctions.misc import fn_name
-from logging import getLogger
+import logging
 import time
 import datetime
 import requests
 from prometheus_client import Summary, Gauge, Enum, REGISTRY
+from ofunctions.requestor import Requestor
+from ofunctions.misc import fn_name
 
 # from prometheus_client.core import GaugeMetricFamily, CounterMetricFamily, REGISTRY
 
 from altaro_exporter.__debug__ import _DEBUG
 
-
-logger = getLogger()
+logger = logging.getLogger()
 
 
 class AltaroAPI:
@@ -34,7 +33,7 @@ class AltaroAPI:
 
     def __init__(
         self,
-        altaro_rest_host: str,
+        altaro_rest_host: str = "localhost",
         altaro_rest_port: int = 36013,
         altaro_rest_path: str = "/api/rest",
         domain: str = None,
@@ -107,12 +106,12 @@ class AltaroAPI:
 
         self.gauge_lastbackup_duration = Gauge(
             "altaro_lastbackup_duration_seconds",
-            "Duration of last backup",
+            "Duration of last backup in seconds",
             ["vmname", "hostname", "vmuuid"],
         )
         self.gauge_lastoffsitecopy_duration = Gauge(
             "altaro_lastoffsitecopy_duration_seconds",
-            "Duration of last offsite copy",
+            "Duration of last offsite copy in seconds",
             ["vmname", "hostname", "vmuuid"],
         )
 
@@ -149,9 +148,35 @@ class AltaroAPI:
             ["vmname", "hostname", "vmuuid"],
         )
 
+        self.gauge_lastrestore_result = Gauge(
+            "altaro_lastrestore_result",
+            "Result of last restore operation  0 = success, 1 = warning, 2 = error, 3 = unknown, 4 = Aborted, 5 = other errors",
+            ["vmname", "vmuuid"],
+        )
+
+        self.gauge_lastrestore = Gauge(
+            "altaro_lastrestore",
+            "Timestamp of last restore operation",
+            ["vmname", "vmuuid"],
+        )
+
+        self.gauge_lastrestore_duration = Gauge(
+            "altaro_lastrestore_duration_seconds",
+            "Duration of last backup in seconds",
+            ["vmname", "vmuuid"],
+        )
+
         # Create a metric to track time spent and requests made.
         REQUEST_TIME = Summary(
             "request_processing_seconds", "Time spent processing request"
+        )
+
+    @staticmethod
+    def mktimestamp(date_string):
+        return float(
+            time.mktime(
+                datetime.datetime.strptime(date_string, "%Y-%m-%d-%H-%M-%S").timetuple()
+            )
         )
 
     def reset_vm_metrics(self):
@@ -206,16 +231,23 @@ class AltaroAPI:
         return result
 
     def _api_request(
-        self, pre_endpoint: str, post_endpoint: str = "", action: str = "read"
+        self,
+        pre_endpoint: str,
+        post_endpoint: str = "",
+        action: str = "read",
+        ignore_session_id: bool = False,
     ):
         """
         Shorthand to logout / login if session is invalid
         """
         if not self.session_id:
             self.authenticate(action="login")
-        result = self.req.requestor(
-            endpoint=f"{pre_endpoint}{self.session_id}{post_endpoint}", action=action
-        )
+        if ignore_session_id:
+            endpoint = f"{pre_endpoint}{post_endpoint}"
+        else:
+            endpoint = f"{pre_endpoint}{self.session_id}{post_endpoint}"
+        logger.debug(f"Requesting {endpoint}")
+        result = self.req.requestor(endpoint=endpoint, action=action)
         if not result:
             # Let's try to logout, login just to make sure
             logger.warning("API call failed, trying to reauthenticate")
@@ -246,6 +278,78 @@ class AltaroAPI:
         self.gauge_altaro_api_success.set(0)
         return result
 
+    def protocol_version(self):
+        result = self._api_request(
+            pre_endpoint=f"/{self.altaro_rest_path}/protocol/version",
+            ignore_session_id=True,
+        )
+        if result is False:
+            logger.error("Could not get API protocol version")
+            return False
+        logger.info(f"Using API protocol version {result}")
+        return True
+
+    def vm_restore_history(
+        self,
+        vmid: str,
+        vmuuid: str,
+        vmname: str,
+    ):
+        """
+        Gives restore reports like
+        {'RestoreReports': [{'DateTime': '2026-01-22-14-48-04', 'Duration': 1132, 'Result': 'Aborted', 'Location': '\\\\UNCPATH\\altaro', 'Error': 'The restore operation was aborted by the user. (ALTERR_BASERESTORECONTROLLER_007)', 'RestoreAsName': 'SomeVM-Clone-2026-01-22 14-34'}], 'Success': True, 'ErrorCode': None, 'ErrorMessage': None, 'ErrorAdditionalDetails': None}
+        """
+
+        result = self._api_request(
+            pre_endpoint=f"/{self.altaro_rest_path}/reports/restore/",
+            post_endpoint=f"/{vmid}",
+        )
+        if result is False:
+            logger.error(f"Could not get VM restore history for {vmname} {vmid}")
+            return False
+        logger.info(f"Got VM restore history for {vmname} {vmid}")
+        restore_status = 3
+        try:
+            restore_report = result["RestoreReports"]
+        except KeyError:
+            logger.error("Could not find any restore reports")
+            return False
+
+        restore_report = sorted(
+            restore_report, key=lambda x: self.mktimestamp(x["DateTime"])
+        )
+        if not restore_report:
+            return True
+        logger.debug(f"Restore report for {vmname}\n{restore_report}")
+        try:
+            if restore_report[-1]["Result"].lower() == "success":
+                restore_status = 0
+            elif restore_report[-1]["Result"].lower() == "warning":
+                restore_status = 1
+            elif restore_report[-1]["Result"].lower() == "error":
+                restore_status = 2
+            elif restore_report[-1]["Result"].lower() == "unknown":
+                restore_status = 3
+            elif restore_report[-1]["Result"].lower() == "aborted":
+                restore_status = 4
+            elif restore_report[-1]["Result"].lower() is not None:
+                restore_status = 5
+            timestamp = self.mktimestamp(restore_report[-1]["DateTime"])
+            duration = int(restore_report[-1]["Duration"])
+        except IndexError:
+            logger.error(f"No restore status available for {vmname} {vmuuid}")
+            return False
+
+        self.gauge_lastrestore_result.labels(vmname, vmuuid).set(restore_status)
+        self.gauge_lastrestore.labels(vmname, vmuuid).set(timestamp)
+
+        try:
+            #  in Seconds
+            self.gauge_lastrestore_duration.labels(vmname, vmuuid).set(duration)
+        except KeyError:
+            logger.error(f"Cannot get restore duration for {vmname}")
+        return True
+
     def list_vms(
         self, include_unconfigured: bool = False, include_non_scheduled: bool = False
     ):
@@ -257,6 +361,8 @@ class AltaroAPI:
             logger.error("Could not list VMs")
             return False
         logger.info("VMs listed successfully")
+        logger.debug(f"Result:\n{result}")
+
         vms = result["VirtualMachines"]
         if not vms:
             logger.error("No VM data found in request:\n{vms}")
@@ -266,6 +372,7 @@ class AltaroAPI:
             vmname = vm["VirtualMachineName"]
             hostname = vm["HostName"]
             vmuuid = vm["HypervisorVirtualMachineUuid"]
+            vmid = vm["AltaroVirtualMachineRef"]
             is_scheduled = vm["NextBackupTime"] or vm["NextOffsiteCopyTime"]
             if not is_scheduled and not include_non_scheduled:
                 logger.info(
@@ -274,28 +381,18 @@ class AltaroAPI:
                 continue
             logger.info(f"Found VM {vmname} on {hostname}")
 
+            self.vm_restore_history(vmid, vmuuid, vmname)
+
             # Last Backup, ex 2024-08-13-01-53-14
             LastBackupTime = vm["LastBackupTime"]
             if LastBackupTime:
-                timestamp = float(
-                    time.mktime(
-                        datetime.datetime.strptime(
-                            LastBackupTime, "%Y-%m-%d-%H-%M-%S"
-                        ).timetuple()
-                    )
-                )
+                timestamp = self.mktimestamp(LastBackupTime)
                 self.gauge_lastbackup.labels(vmname, hostname, vmuuid).set(timestamp)
 
             # Last Offsite Copy
             LastOffsiteCopyTime = vm["LastOffsiteCopyTime"]
             if LastOffsiteCopyTime:
-                timestamp = float(
-                    time.mktime(
-                        datetime.datetime.strptime(
-                            LastOffsiteCopyTime, "%Y-%m-%d-%H-%M-%S"
-                        ).timetuple()
-                    )
-                )
+                timestamp = self.mktimestamp(LastOffsiteCopyTime)
                 self.gauge_lastoffsitecopy.labels(vmname, hostname, vmuuid).set(
                     timestamp
                 )
@@ -374,15 +471,20 @@ class AltaroAPI:
         return True
 
 
-"""
-This isn't launched unless for testing purposes
+# This isn't launched unless for testing purposes
+if __name__ == "__main__":
+    logging.basicConfig(
+        format="%(levelname)s:%(message)s", encoding="utf-8", level=logging.DEBUG
+    )
+    logger = logging.getLogger()
 
-api = AltaroAPI(
-    "https://localhost",
-    usfername="Administrator",
-    password="SomeTestPassword",
-    cert_verify=False,
-)
-api.authenticate()
-api.list_vms()
-"""
+    api = AltaroAPI(
+        username="Administrator",
+        password="MySuperSecretPassword",
+        cert_verify=False,
+    )
+
+    api.protocol_version()
+    api.authenticate(action="logout")
+    api.authenticate()
+    api.list_vms()
