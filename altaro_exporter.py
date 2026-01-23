@@ -15,16 +15,23 @@ import sys
 import os
 from pathlib import Path
 from argparse import ArgumentParser
+
 # Fix dev env module import
 # pylint: disable=C0413 (wrong-import-position)
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from ofunctions.logger_utils import logger_get_logger
 from altaro_exporter.__debug__ import _DEBUG
+
 # Declaring logger here before configuration gets to load a non existing logger instance
 logger = logger_get_logger(__appname__ + ".log", debug=_DEBUG)
 from altaro_exporter.configuration import load_config
 from altaro_exporter import metrics
 
+"""
+HornetSecurity / Altaro VMBackup API Prometheus data exporter
+Main entrypoint which will work as HTTP server exposing metrics to Prometheus
+This is also the program that becomes a Windows service if compiled
+"""
 
 
 def main():
