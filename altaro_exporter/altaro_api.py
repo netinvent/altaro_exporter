@@ -9,7 +9,7 @@ __site__ = "https://www.github.com/netinvent/altaro_exporter"
 __description__ = "Altaro API Prometheus data exporter"
 __copyright__ = "Copyright (C) 2024-2025 NetInvent"
 __license__ = "GPL-3.0-only"
-__build__ = "2026012202"
+__build__ = "2026012301"
 
 import logging
 import time
@@ -306,6 +306,7 @@ class AltaroAPI:
             pre_endpoint=f"/{self.altaro_rest_path}/reports/restore/",
             post_endpoint=f"/{vmid}",
         )
+        logger.debug(f"VM restore report:\n{result}")
         if result is False:
             logger.error(f"Could not get VM restore history for {vmname} {vmid}")
             return False
@@ -316,7 +317,10 @@ class AltaroAPI:
         except KeyError:
             logger.error("Could not find any restore reports")
             return False
-
+        if not restore_report:
+            logger.info(f"Empty restore report for {vmname}")
+            return True
+        
         restore_report = sorted(
             restore_report, key=lambda x: self.mktimestamp(x["DateTime"])
         )
