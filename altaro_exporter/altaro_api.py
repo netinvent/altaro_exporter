@@ -320,7 +320,7 @@ class AltaroAPI:
         if not restore_report:
             logger.info(f"Empty restore report for {vmname}")
             return True
-        
+
         restore_report = sorted(
             restore_report, key=lambda x: self.mktimestamp(x["DateTime"])
         )
