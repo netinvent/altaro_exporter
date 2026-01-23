@@ -23,6 +23,7 @@ from fastapi_offline import FastAPIOffline
 from altaro_exporter.__version__ import __version__
 from altaro_exporter.configuration import load_config
 from altaro_exporter.altaro_api import AltaroAPI
+from resources.customization import SHORT_PRODUCT_NAME
 import prometheus_client
 
 logger = getLogger()
@@ -127,7 +128,7 @@ except (KeyError, AttributeError, TypeError):
 
 @app.get("/")
 async def api_root(auth=Depends(auth_scheme)):
-    return {"app": __appname__, "version": __version__}
+    return {"app": SHORT_PRODUCT_NAME, "version": __version__}
 
 
 @app.get("/metrics")
