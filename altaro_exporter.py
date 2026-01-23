@@ -9,22 +9,22 @@ __site__ = "https://www.github.com/netinvent/altaro_exporter"
 __description__ = "HornetSecurity / Altaro VMBackup API Prometheus data exporter"
 __copyright__ = "Copyright (C) 2024-2026 NetInvent"
 __license__ = "GPL-3.0-only"
-__build__ = "2024032601"
-
+__build__ = "2026012301"
 
 import sys
 import os
-
-# Fix dev env module import
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from pathlib import Path
 from argparse import ArgumentParser
+# Fix dev env module import
+# pylint: disable=C0413 (wrong-import-position)
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from ofunctions.logger_utils import logger_get_logger
+from altaro_exporter.__debug__ import _DEBUG
+# Declaring logger here before configuration gets to load a non existing logger instance
+logger = logger_get_logger(__appname__ + ".log", debug=_DEBUG)
 from altaro_exporter.configuration import load_config
 from altaro_exporter import metrics
-from altaro_exporter.__debug__ import _DEBUG
-from ofunctions.logger_utils import logger_get_logger
 
-logger = logger_get_logger(__appname__ + ".log", debug=_DEBUG)
 
 
 def main():
