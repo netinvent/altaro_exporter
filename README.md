@@ -115,7 +115,7 @@ altaro_lastrestore_duration_seconds
 
 ### Troubeshooting
 
-This program has currently been tested on HornetSecurity v9.0, v9.1 and v9.3.
+This program has currently been tested on HornetSecurity VMBackup v9.0, v9.1,v9.3 and v9.6.
 
 By default, the exporter will log to current binary directory into a file named `altaro_exporter.log`
 Of course, you can also run the executable manually.  
