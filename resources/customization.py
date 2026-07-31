@@ -14,7 +14,7 @@ __version__ = "1.3.1"
 import os
 
 # Windows Program name for scheduled task
-PROGRAM_NAME = "NetPerfect VMBackup Exporter"
+PROGRAM_NAME = "NetInvent VMBackup Exporter"
 
 # Windows executable file info
 COMPANY_NAME = "NetInvent"
