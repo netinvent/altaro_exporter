@@ -1,4 +1,5 @@
 # Altaro / Hornet Security VM Backup Exporter
+# Altaro / Hornet Security VM Backup Exporter
 [![License](https://img.shields.io/badge/license-MIT-blu.svg)](https://opensource.org/license/mit)
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/netinvent/altaro_exporter.svg)](http://isitmaintained.com/project/netinvent/altaro_exporter "Percentage of issues still open")
 [![GitHub Release](https://img.shields.io/github/release/netinvent/altaro_exporter.svg?label=Latest)](https://github.com/netinvent/altaro_exporter/releases/latest)
@@ -148,7 +149,7 @@ If requested, we can provide pip packages too.
 
 ### License
 
-Licensed under MIT License, so do whatever you want with it... Contributions are welcome  
+Licensed under BSD 3-Clause License. Contributions are welcome  
 (C) 2024-2026 NetInvent SASU  
 (C) 2020 Raphael Pertl
 

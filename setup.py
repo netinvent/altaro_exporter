@@ -7,7 +7,7 @@
 __intname__ = "altaro_exporter.setup"
 __author__ = "Orsiris de Jong"
 __copyright__ = "Copyright (C) 2024-2026 NetInvent"
-__license__ = "GPL-3.0-only"
+__license__ = "MIT License"
 __build__ = "2024032601"
 __setup_ver__ = "1.0.0"
 
@@ -130,10 +130,10 @@ setuptools.setup(
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
         "Operating System :: POSIX :: Linux",
-        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "License :: OSI Approved :: BSD License",
     ],
     description=DESCRIPTION,
-    license="GPLv3",
+    license="BSD-3-Clause",
     author="NetInvent - Orsiris de Jong",
     author_email="contact@netinvent.fr",
     url="https://github.com/netinvent/altaro_exporter",

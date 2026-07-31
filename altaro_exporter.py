@@ -8,7 +8,7 @@ __author__ = "Orsiris de Jong"
 __site__ = "https://www.github.com/netinvent/altaro_exporter"
 __description__ = "HornetSecurity / Altaro VMBackup API Prometheus data exporter"
 __copyright__ = "Copyright (C) 2024-2026 NetInvent"
-__license__ = "GPL-3.0-only"
+__license__ = "MIT License"
 __build__ = "2026012301"
 
 import sys
@@ -43,8 +43,7 @@ def main():
     parser = ArgumentParser(
         prog=f"{__appname__}",
         description="""Hornet Security / Altaro API Prometheus exporter\n
-This program is distributed under the GNU General Public License and comes with ABSOLUTELY NO WARRANTY.\n
-This is free software, and you are welcome to redistribute it under certain conditions; Please type --license for more info.""",
+This program is distributed under the BSD 3-Clause License and comes with ABSOLUTELY NO WARRANTY.""",
     )
 
     parser.add_argument(

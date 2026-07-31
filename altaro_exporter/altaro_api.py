@@ -8,7 +8,7 @@ __author__ = "Orsiris de Jong"
 __site__ = "https://www.github.com/netinvent/altaro_exporter"
 __description__ = "Altaro API Prometheus data exporter"
 __copyright__ = "Copyright (C) 2024-2026 NetInvent"
-__license__ = "GPL-3.0-only"
+__license__ = "MIT License"
 __build__ = "2026012301"
 
 import logging

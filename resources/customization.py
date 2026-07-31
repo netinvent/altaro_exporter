@@ -6,7 +6,7 @@
 __intname__ = "altaro_exporter.customization"
 __author__ = "Orsiris de Jong"
 __copyright__ = "Copyright (C) 2022-2026 NetInvent"
-__license__ = "GPL-3.0-only"
+__license__ = "MIT License"
 __build__ = "2026012301"
 __version__ = "1.3.1"
 
