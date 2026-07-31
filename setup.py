@@ -99,7 +99,6 @@ requirements = parse_requirements(
 long_description = _read_file("README.md")
 
 
-console_scripts = ["altaro_exporter = altaro_exporter.server:main"]
 setuptools.setup(
     name=PACKAGE_NAME,
     # We may use find_packages in order to not specify each package manually
@@ -147,9 +146,6 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     python_requires=">=3.6",
-    entry_points={
-        "console_scripts": console_scripts,
-    },
     # As we do version specific hacks for installed inline copies, make the
     # wheel version and platform specific.
     # distclass=BinaryDistribution,
