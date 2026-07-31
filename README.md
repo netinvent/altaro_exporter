@@ -149,7 +149,7 @@ If requested, we can provide pip packages too.
 
 ### License
 
-Licensed under BSD 3-Clause License. Contributions are welcome  
+Licensed under MIT License. Contributions are welcome  
 (C) 2024-2026 NetInvent SASU  
 (C) 2020 Raphael Pertl
 

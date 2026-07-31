@@ -43,7 +43,7 @@ def main():
     parser = ArgumentParser(
         prog=f"{__appname__}",
         description="""Hornet Security / Altaro API Prometheus exporter\n
-This program is distributed under the BSD 3-Clause License and comes with ABSOLUTELY NO WARRANTY.""",
+This program is distributed under the MIT License and comes with ABSOLUTELY NO WARRANTY.""",
     )
 
     parser.add_argument(
